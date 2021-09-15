@@ -150,9 +150,9 @@ app.get('/getstudents/:id', async (req, res) => {
         let mentorid = req.params.id;
         let client = await mongoClient.connect(MONGO_URL);
         let db = client.db("mentor-assign");
-        let studentid = await db.collection("mentor").find({ _id: mongodb.ObjectId(mentorid) }).toArray();
+        let studentid = await db.collection("student").find({ mentorID: mongodb.ObjectId(mentorid) }).toArray();
         await client.close();
-        res.send(studentsDetails);
+        res.send(studentid);
     } catch (error) {
         res.status(404).json({
             message: "Something went wrong!"
@@ -160,20 +160,5 @@ app.get('/getstudents/:id', async (req, res) => {
     }
 })
 
-//Get student for a given student id
-app.get('/mentorstudents/:id', async (req, res) => {
-    try {
-        let studentid = req.params.id;
-        let client = await mongoClient.connect(MONGO_URL);
-        let db = client.db("mentor-assign");
-        let Student = await db.collection("student").find({ _id: mongodb.ObjectId(studentid) }).toArray();
-        await client.close();
-        res.send(studentsDetails);
-    } catch (error) {
-        res.status(404).json({
-            message: "Something went wrong!"
-        })
-    }
-})
 
 app.listen(PORT, () => console.log(`app is listening in port::: ${PORT}`))
