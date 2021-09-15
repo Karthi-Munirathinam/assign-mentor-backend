@@ -7,13 +7,17 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 const mongoClient = mongodb.MongoClient;
 const MONGO_URL = process.env.MONGO_URL;
+
+//Middlewares
 app.use(express.json());
 app.use(cors({
     origin: "*"
 }))
 
+//Create a mentor
 app.post('/savementor', async (req, res) => {
     try {
         let client = await mongoClient.connect(MONGO_URL);
@@ -31,6 +35,7 @@ app.post('/savementor', async (req, res) => {
     }
 })
 
+//Create a student
 app.post('/savestudent', async (req, res) => {
     try {
         let client = await mongoClient.connect(MONGO_URL);
@@ -47,6 +52,7 @@ app.post('/savestudent', async (req, res) => {
     }
 })
 
+//Get students who don't have mentor
 app.get('/getstudents', async (req, res) => {
     try {
         let client = await mongoClient.connect(MONGO_URL);
@@ -61,6 +67,7 @@ app.get('/getstudents', async (req, res) => {
     }
 })
 
+//Get all the students
 app.get('/getallstudents', async (req, res) => {
     try {
         let client = await mongoClient.connect(MONGO_URL);
@@ -75,6 +82,7 @@ app.get('/getallstudents', async (req, res) => {
     }
 })
 
+//Get all the mentors
 app.get('/getmentors', async (req, res) => {
     try {
         let client = await mongoClient.connect(MONGO_URL);
@@ -147,7 +155,7 @@ app.get('/getmentor/:id', async (req, res) => {
     }
 })
 
-//Get studentsid for current mentor
+//Get students of a particular mentor
 app.get('/getstudents/:id', async (req, res) => {
     try {
         let mentorid = req.params.id;
