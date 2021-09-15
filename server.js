@@ -100,11 +100,10 @@ app.get('/getmentors', async (req, res) => {
 //Assign mentor to each student with student id
 app.put('/assignmentor/:id', async (req, res) => {
     try {
-        console.log(req.params.id)
+        // console.log(req.params.id)
         let studentid = req.params.id;
         let client = await mongoClient.connect(MONGO_URL);
         let db = client.db("mentor-assign");
-
         let data = await db.collection("student").findOneAndUpdate({ _id: mongodb.ObjectId(studentid) }, { $set: { assignedmentor: req.body.assignedmentor, mentorID: mongodb.ObjectId(req.body.mentorId) } });
         await client.close();
         res.json({
@@ -143,9 +142,8 @@ app.get('/getmentor/:id', async (req, res) => {
         let client = await mongoClient.connect(MONGO_URL);
         let db = client.db("mentor-assign");
         let mentorid = await db.collection("student").find({ _id: mongodb.ObjectId(studentid) }).toArray();
-        console.log(mentorid);
         let data = await db.collection("mentor").find({ _id: mentorid[0].mentorID }).toArray();
-        console.log(data);
+        // console.log(data);
         await client.close();
         res.send(data);
     } catch (error) {
